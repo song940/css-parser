@@ -12,11 +12,13 @@ exports.parse = content => {
   }
   return content
     .replace(/\n/g, '')
+    .replace(/\/\*(.|[\r\n])*?\*\//g, '')
     .replace(/\}/g, '}\n')
     .split(/\n/g)
     .filter(x => !!x.trim())
     .map(line => {
       const tokens = line.match(/^(.+)\{(.+)\}$/);
+      if(!tokens) return new SyntaxError('Unexpected error:' + line)
       let [ _, selector, content ] = tokens;
       selector = selector.split(',');
       content = content.replace(/\s/g, '');
