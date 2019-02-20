@@ -18,9 +18,9 @@ exports.parse = content => {
     .filter(x => !!x.trim())
     .map(line => {
       const tokens = line.match(/^(.+)\{(.+)\}$/);
-      if(!tokens) return new SyntaxError('Unexpected error:' + line)
+      if(!tokens) return new SyntaxError(`Unexpected error: ${line}`);
       let [ _, selector, content ] = tokens;
-      selector = selector.split(',');
+      selector = selector.split(',').map(s => s.trim());
       content = content.replace(/\s/g, '');
       return {
         raw: _, selector, content, props: kv(content)
